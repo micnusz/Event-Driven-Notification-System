@@ -17,7 +17,7 @@ public class UserService {
 
     @Transactional
     public UserResponse createUser(UserRequest request) {
-        if (userRepository.findUserByEmail(request.getEmail()).isPresent()) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new EmailAlreadyExistsException(request.getEmail());
         }
 
