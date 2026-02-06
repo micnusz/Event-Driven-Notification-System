@@ -10,10 +10,13 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Transactional
     public UserResponse createUser(UserRequest request) {
@@ -22,9 +25,16 @@ public class UserService {
                     throw new EmailAlreadyExistsException(request.getEmail());
                 });
 
-        User user = UserMapper.toEntity(request);
+        User user = userMapper.toEntity(request);
         User saved = userRepository.save(user);
-        return UserMapper.toDto(saved);
+        return userMapper.toDto(saved);
+    }
+
+    public List<UserResponse> getUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::toDto)
+                .toList();
     }
 }
 

@@ -7,12 +7,10 @@ import com.micnusz.edns.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -25,5 +23,11 @@ public class UserController {
     public ResponseEntity<UserResponse> registerUser(@RequestBody @Valid UserRequest request) {
         UserResponse response = userService.createUser(request);
         return ResponseEntity.created(URI.create("/api/users/" + response.getId())).body(response);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<UserResponse>> getUsers() {
+        List<UserResponse> users = userService.getUsers();
+        return ResponseEntity.ok(users);
     }
 }
