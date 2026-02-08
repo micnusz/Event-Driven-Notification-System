@@ -4,7 +4,9 @@ import com.micnusz.edns.enums.EventType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "events")
@@ -16,29 +18,15 @@ import java.time.LocalDateTime;
 public class Event {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private EventType type;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    private String recipientId;
+
+    @Column(columnDefinition = "jsonb")
     private String payload;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipient_id")
-    private User recipient;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "actor_id")
-    private User actor;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
+    private Instant occurredAt;
 }
