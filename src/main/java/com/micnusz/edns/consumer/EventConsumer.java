@@ -1,6 +1,5 @@
 package com.micnusz.edns.consumer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.micnusz.edns.model.Event;
 import com.micnusz.edns.model.EventEnvelope;
 import com.micnusz.edns.repository.EventRepository;
@@ -9,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.Instant;
 import java.util.Map;
