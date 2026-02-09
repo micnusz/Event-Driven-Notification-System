@@ -10,7 +10,7 @@ public record EventEnvelope(
         UUID eventId,
         EventType type,
         String recipientId,
-        Instant occurredAt,
+        String occurredAt,
         Map<String, Object> payload,
         int version
 ) {}

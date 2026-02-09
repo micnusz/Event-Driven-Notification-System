@@ -1,4 +1,4 @@
-package com.micnusz.edns.config;  // To jest OK, obie klasy mogą być w tym samym pakiecie
+package com.micnusz.edns.config;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
