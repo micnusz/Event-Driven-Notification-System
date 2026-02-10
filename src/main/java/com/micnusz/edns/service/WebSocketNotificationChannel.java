@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class WebSocketNotificationChannel {
 
-    private final SimpMessagingTemplate messagingTemplate;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
 
     public void sendToUser(String recipientId, NotificationResponse response) {
         log.info("🌐 Sending WebSocket notification to user: {}", recipientId);
-        messagingTemplate.convertAndSendToUser(
+        simpMessagingTemplate.convertAndSendToUser(
                 recipientId,
                 "/queue/notifications",
                 response
@@ -26,6 +26,6 @@ public class WebSocketNotificationChannel {
 
     public void broadcast(NotificationResponse response) {
         log.info("📢 Broadcasting WebSocket notification to all users");
-        messagingTemplate.convertAndSend("/topic/notifications", response);
+        simpMessagingTemplate.convertAndSend("/topic/notifications", response);
     }
 }

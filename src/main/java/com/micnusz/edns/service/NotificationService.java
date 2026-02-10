@@ -3,15 +3,16 @@ package com.micnusz.edns.service;
 import com.micnusz.edns.dto.NotificationResponse;
 import com.micnusz.edns.model.EventEnvelope;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static org.apache.kafka.common.requests.DeleteAclsResponse.log;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationService {
 
-    private final WebSocketNotificationChannel webSocketChannel;
+    private final WebSocketNotificationChannel webSocketNotificationChannel;
 
     public void processEvent(EventEnvelope event) {
         log.info("🔔 NOTIFICATION for recipient: {}", event.recipientId());
@@ -24,7 +25,7 @@ public class NotificationService {
         log.info("   Message: {}", message);
 
         NotificationResponse notification = NotificationResponse.from(event, title, message);
-        webSocketChannel.sendToUser(event.recipientId(), notification);
+        webSocketNotificationChannel.sendToUser(event.recipientId(), notification);
     }
 
 

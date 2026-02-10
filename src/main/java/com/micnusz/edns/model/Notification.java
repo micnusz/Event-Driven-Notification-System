@@ -19,7 +19,6 @@ import java.util.UUID;
 public class Notification {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
     @Enumerated(EnumType.STRING)
