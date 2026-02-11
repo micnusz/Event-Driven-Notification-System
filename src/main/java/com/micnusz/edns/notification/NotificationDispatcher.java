@@ -1,5 +1,6 @@
 package com.micnusz.edns.notification;
 
+import com.micnusz.edns.error.exception.InvalidNotificationTypeException;
 import com.micnusz.edns.notification.builder.NotificationMessageBuilder;
 import com.micnusz.edns.notification.dto.NotificationResponse;
 import com.micnusz.edns.websocket.service.WebSocketNotificationChannel;
@@ -20,9 +21,7 @@ public class NotificationDispatcher {
         NotificationMessageBuilder builder = notificationMessageBuilders.stream()
                 .filter(b -> b.supports() == notificationCommand.type())
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException(
-                        "No builder for type: " + notificationCommand.type()
-                ));
+                .orElseThrow(() -> new InvalidNotificationTypeException(notificationCommand.type()));
 
         String title = builder.buildTitle(notificationCommand);
         String message = builder.buildMessage(notificationCommand);

@@ -27,4 +27,10 @@ public class GlobalExceptionHandler {
         HttpStatus status = HttpStatus.CONFLICT;
         return ResponseEntity.status(status).body(buildError(status, exception.getMessage(), request.getRequestURI()));
     }
+
+    @ExceptionHandler(InvalidNotificationTypeException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidNotificationTypeException(InvalidNotificationTypeException exception, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        return ResponseEntity.status(status).body(buildError(status, exception.getMessage(), request.getRequestURI()));
+    }
 }
