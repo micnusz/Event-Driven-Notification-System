@@ -17,7 +17,6 @@ import java.net.URI;
 @RequestMapping("/api/events")
 @RequiredArgsConstructor
 public class EventController {
-
     private final EventApplicationService eventApplicationService;
 
 

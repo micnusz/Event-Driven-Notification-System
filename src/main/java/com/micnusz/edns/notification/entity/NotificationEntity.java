@@ -1,6 +1,7 @@
 package com.micnusz.edns.notification.entity;
 
 
+import com.micnusz.edns.event.entity.EventEntity;
 import com.micnusz.edns.notification.enums.NotificationChannel;
 import com.micnusz.edns.notification.enums.NotificationStatus;
 import com.micnusz.edns.user.entity.UserEntity;
@@ -36,7 +37,7 @@ public class NotificationEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
-    private Event event;
+    private EventEntity event;
 
     @Column(nullable = false)
     private int retryCount = 0;

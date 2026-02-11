@@ -1,7 +1,7 @@
 package com.micnusz.edns.event.consumer;
 
+import com.micnusz.edns.event.dto.EventEnvelope;
 import com.micnusz.edns.event.handler.EventHandler;
-import com.micnusz.edns.model.EventEnvelope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

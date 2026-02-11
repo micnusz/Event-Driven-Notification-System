@@ -1,7 +1,7 @@
 package com.micnusz.edns.event.mapper;
 
 import com.micnusz.edns.event.entity.EventEntity;
-import com.micnusz.edns.model.EventEnvelope;
+import com.micnusz.edns.event.dto.EventEnvelope;
 import org.springframework.stereotype.Component;
 
 @Component

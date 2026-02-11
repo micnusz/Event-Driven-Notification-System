@@ -2,7 +2,7 @@ package com.micnusz.edns.event.service;
 
 import com.micnusz.edns.event.entity.EventEntity;
 import com.micnusz.edns.event.mapper.EventPersistenceMapper;
-import com.micnusz.edns.model.EventEnvelope;
+import com.micnusz.edns.event.dto.EventEnvelope;
 import com.micnusz.edns.event.repository.EventRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

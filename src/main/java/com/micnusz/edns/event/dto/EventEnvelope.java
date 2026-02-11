@@ -1,4 +1,4 @@
-package com.micnusz.edns.model;
+package com.micnusz.edns.event.dto;
 
 import com.micnusz.edns.event.enums.EventType;
 import lombok.AllArgsConstructor;

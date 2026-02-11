@@ -1,6 +1,6 @@
 package com.micnusz.edns.event.producer;
 
-import com.micnusz.edns.model.EventEnvelope;
+import com.micnusz.edns.event.dto.EventEnvelope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;

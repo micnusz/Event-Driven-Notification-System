@@ -1,6 +1,6 @@
 package com.micnusz.edns.notification.dto;
 
-import com.micnusz.edns.model.EventEnvelope;
+import com.micnusz.edns.event.dto.EventEnvelope;
 import com.micnusz.edns.notification.NotificationCommand;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface EventRepository extends JpaRepository<EventEntity, UUID> {
-    List<Event> findByRecipientId(String recipientId);
-    List<Event> findByType(EventType type);
+    List<EventEntity> findByRecipientId(String recipientId);
+    List<EventEntity> findByType(EventType type);
 }

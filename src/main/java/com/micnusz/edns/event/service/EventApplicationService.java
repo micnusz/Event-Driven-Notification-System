@@ -1,9 +1,9 @@
 package com.micnusz.edns.event.service;
 
+import com.micnusz.edns.event.dto.EventEnvelope;
 import com.micnusz.edns.event.dto.EventRequest;
 import com.micnusz.edns.event.dto.EventResponse;
 import com.micnusz.edns.event.producer.EventProducer;
-import com.micnusz.edns.model.EventEnvelope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
