@@ -3,8 +3,8 @@ package com.micnusz.edns.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 
-@Configuration
-@EnableKafka
-public class KafkaConsumerConfig {
+    @Configuration
+    @EnableKafka
+    public class KafkaConsumerConfig {
 
-}
+    }

@@ -1,16 +1,24 @@
 package com.micnusz.edns.model;
 
 import com.micnusz.edns.enums.EventType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
-public record EventEnvelope(
-        UUID eventId,
-        EventType type,
-        String recipientId,
-        String occurredAt,
-        Map<String, Object> payload,
-        int version
-) {}
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class EventEnvelope {
+        UUID eventId;
+        EventType type;
+        String recipientId;
+        Instant occurredAt;
+        Map<String, Object> payload;
+        int version;
+}

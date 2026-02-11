@@ -15,9 +15,9 @@ public class NotificationService {
     private final WebSocketNotificationChannel webSocketNotificationChannel;
 
     public void processEvent(EventEnvelope event) {
-        log.info("🔔 NOTIFICATION for recipient: {}", event.recipientId());
-        log.info("   Type: {}", event.type());
-        log.info("   Payload: {}", event.payload());
+        log.info("🔔 NOTIFICATION for recipient: {}", event.getRecipientId());
+        log.info("   Type: {}", event.getType());
+        log.info("   Payload: {}", event.getPayload());
 
         String title = buildTitle(event);
         String message = buildMessage(event);
@@ -25,12 +25,12 @@ public class NotificationService {
         log.info("   Message: {}", message);
 
         NotificationResponse notification = NotificationResponse.from(event, title, message);
-        webSocketNotificationChannel.sendToUser(event.recipientId(), notification);
+        webSocketNotificationChannel.sendToUser(event.getRecipientId(), notification);
     }
 
 
     private String buildTitle(EventEnvelope event) {
-        return switch (event.type()) {
+        return switch (event.getType()) {
             case TASK_ASSIGNED -> "New Task Assigned";
             case TASK_COMPLETED -> "Task Completed";
             case REMINDER -> "Reminder";
@@ -40,13 +40,13 @@ public class NotificationService {
     }
 
     private String buildMessage(EventEnvelope event) {
-        return switch (event.type()) {
-            case TASK_ASSIGNED -> "New task: " + event.payload().get("taskName")
-                    + " assigned by " + event.payload().get("assignedBy");
-            case TASK_COMPLETED -> "Task completed: " + event.payload().get("taskName");
-            case REMINDER -> (String) event.payload().get("text");
-            case ALERT -> (String) event.payload().get("message");
-            default -> "Event: " + event.type();
+        return switch (event.getType()) {
+            case TASK_ASSIGNED -> "New task: " + event.getPayload().get("taskName")
+                    + " assigned by " + event.getPayload().get("assignedBy");
+            case TASK_COMPLETED -> "Task completed: " + event.getPayload().get("taskName");
+            case REMINDER -> (String) event.getPayload().get("text");
+            case ALERT -> (String) event.getPayload().get("message");
+            default -> "Event: " + event.getType();
         };
     }
 }

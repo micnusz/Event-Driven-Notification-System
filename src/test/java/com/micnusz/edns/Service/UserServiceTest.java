@@ -183,7 +183,6 @@ class UserServiceTest {
         // Given
         UserRequest request = new UserRequest(TEST_EMAIL);
 
-        // Mapper może ustawić ID przed zapisaniem
         User userWithId = User.builder()
                 .id(TEST_USER_ID)
                 .email(TEST_EMAIL)

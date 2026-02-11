@@ -36,7 +36,7 @@ class NotificationServiceTest {
                 UUID.randomUUID(),
                 EventType.TASK_ASSIGNED,
                 "user-123",
-                Instant.now().toString(),
+                Instant.now(),
                 Map.of("taskName", "Fix bug", "assignedBy", "Boss"),
                 1
         );
@@ -54,10 +54,10 @@ class NotificationServiceTest {
         );
 
         NotificationResponse notification = captor.getValue();
-        assertThat(notification.title()).isEqualTo("New Task Assigned");
-        assertThat(notification.message()).isEqualTo("New task: Fix bug assigned by Boss");
-        assertThat(notification.type()).isEqualTo("TASK_ASSIGNED");
-        assertThat(notification.id()).isNotNull();
+        assertThat(notification.getTitle()).isEqualTo("New Task Assigned");
+        assertThat(notification.getMessage()).isEqualTo("New task: Fix bug assigned by Boss");
+        assertThat(notification.getType()).isEqualTo("TASK_ASSIGNED");
+        assertThat(notification.getId()).isNotNull();
     }
 
     @Test
@@ -67,7 +67,7 @@ class NotificationServiceTest {
                 UUID.randomUUID(),
                 EventType.TASK_COMPLETED,
                 "user-456",
-                Instant.now().toString(),
+                Instant.now(),
                 Map.of("taskName", "Deploy app"),
                 1
         );
@@ -85,8 +85,8 @@ class NotificationServiceTest {
         );
 
         NotificationResponse notification = captor.getValue();
-        assertThat(notification.title()).isEqualTo("Task Completed");
-        assertThat(notification.message()).isEqualTo("Task completed: Deploy app");
+        assertThat(notification.getTitle()).isEqualTo("Task Completed");
+        assertThat(notification.getMessage()).isEqualTo("Task completed: Deploy app");
     }
 
     @Test
@@ -96,7 +96,7 @@ class NotificationServiceTest {
                 UUID.randomUUID(),
                 EventType.REMINDER,
                 "user-789",
-                Instant.now().toString(),
+                Instant.now(),
                 Map.of("text", "Meeting at 3pm"),
                 1
         );
@@ -114,8 +114,8 @@ class NotificationServiceTest {
         );
 
         NotificationResponse notification = captor.getValue();
-        assertThat(notification.title()).isEqualTo("Reminder");
-        assertThat(notification.message()).isEqualTo("Meeting at 3pm");
+        assertThat(notification.getTitle()).isEqualTo("Reminder");
+        assertThat(notification.getMessage()).isEqualTo("Meeting at 3pm");
     }
 
     @Test
@@ -125,7 +125,7 @@ class NotificationServiceTest {
                 UUID.randomUUID(),
                 EventType.ALERT,
                 "admin-001",
-                Instant.now().toString(),
+                Instant.now(),
                 Map.of("message", "Server down!"),
                 1
         );
@@ -143,8 +143,8 @@ class NotificationServiceTest {
         );
 
         NotificationResponse notification = captor.getValue();
-        assertThat(notification.title()).isEqualTo("Alert");
-        assertThat(notification.message()).isEqualTo("Server down!");
+        assertThat(notification.getTitle()).isEqualTo("Alert");
+        assertThat(notification.getMessage()).isEqualTo("Server down!");
     }
 
 }

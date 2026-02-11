@@ -19,18 +19,17 @@ public class EventService {
 
     public EventResponse createEvent(EventRequest request) {
         UUID eventId = UUID.randomUUID();
-        String now = Instant.now().toString();
 
         EventEnvelope envelope = new EventEnvelope(
                 eventId,
-                request.type(),
-                request.recipientId(),
-                now,
-                request.payload(),
+                request.getType(),
+                request.getRecipientId(),
+                Instant.now(),
+                request.getPayload(),
                 1
         );
 
-        kafkaTemplate.send("events", envelope.recipientId(), envelope);
+        kafkaTemplate.send("events", envelope.getRecipientId(), envelope);
 
         return new EventResponse(eventId);
     }

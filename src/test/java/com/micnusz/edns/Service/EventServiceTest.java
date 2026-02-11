@@ -44,7 +44,7 @@ class EventServiceTest {
 
         // Then
         assertThat(response).isNotNull();
-        assertThat(response.eventId()).isNotNull();
+        assertThat(response.getEventId()).isNotNull();
 
         // Verify Kafka send was called
         ArgumentCaptor<EventEnvelope> envelopeCaptor = ArgumentCaptor.forClass(EventEnvelope.class);
@@ -55,13 +55,13 @@ class EventServiceTest {
         );
 
         EventEnvelope sentEnvelope = envelopeCaptor.getValue();
-        assertThat(sentEnvelope.eventId()).isEqualTo(response.eventId());
-        assertThat(sentEnvelope.type()).isEqualTo(EventType.TASK_ASSIGNED);
-        assertThat(sentEnvelope.recipientId()).isEqualTo("user-123");
-        assertThat(sentEnvelope.payload()).containsEntry("taskName", "Fix bug");
-        assertThat(sentEnvelope.payload()).containsEntry("assignedBy", "Manager");
-        assertThat(sentEnvelope.version()).isEqualTo(1);
-        assertThat(sentEnvelope.occurredAt()).isNotNull();
+        assertThat(sentEnvelope.getEventId()).isEqualTo(response.getEventId());
+        assertThat(sentEnvelope.getType()).isEqualTo(EventType.TASK_ASSIGNED);
+        assertThat(sentEnvelope.getRecipientId()).isEqualTo("user-123");
+        assertThat(sentEnvelope.getPayload()).containsEntry("taskName", "Fix bug");
+        assertThat(sentEnvelope.getPayload()).containsEntry("assignedBy", "Manager");
+        assertThat(sentEnvelope.getVersion()).isEqualTo(1);
+        assertThat(sentEnvelope.getOccurredAt()).isNotNull();
     }
 
     @Test
@@ -78,7 +78,7 @@ class EventServiceTest {
         EventResponse response2 = eventService.createEvent(request);
 
         // Then
-        assertThat(response1.eventId()).isNotEqualTo(response2.eventId());
+        assertThat(response1.getEventId()).isNotEqualTo(response2.getEventId());
     }
 
     @Test
