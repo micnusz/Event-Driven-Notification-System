@@ -1,9 +1,9 @@
-package com.micnusz.edns.controller;
+package com.micnusz.edns.event.controller;
 
 
-import com.micnusz.edns.dto.EventRequest;
-import com.micnusz.edns.dto.EventResponse;
-import com.micnusz.edns.service.EventService;
+import com.micnusz.edns.event.dto.EventRequest;
+import com.micnusz.edns.event.dto.EventResponse;
+import com.micnusz.edns.event.service.EventApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,12 +18,12 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class EventController {
 
-    private final EventService eventService;
+    private final EventApplicationService eventApplicationService;
 
 
     @PostMapping()
     public ResponseEntity<EventResponse> createEvent(@RequestBody EventRequest request) {
-        EventResponse response = eventService.createEvent(request);
+        EventResponse response = eventApplicationService.createEvent(request);
         return ResponseEntity.created(URI.create("/api/events/" + response.getEventId())).body(response);
     }
 }

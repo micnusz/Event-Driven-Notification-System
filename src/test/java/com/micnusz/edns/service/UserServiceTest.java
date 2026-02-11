@@ -1,4 +1,4 @@
-package com.micnusz.edns.Service;
+package com.micnusz.edns.service;
 
 import com.micnusz.edns.dto.UserRequest;
 import com.micnusz.edns.dto.UserResponse;
@@ -6,13 +6,11 @@ import com.micnusz.edns.exception.EmailAlreadyExistsException;
 import com.micnusz.edns.mapper.UserMapper;
 import com.micnusz.edns.model.User;
 import com.micnusz.edns.repository.UserRepository;
-import com.micnusz.edns.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDateTime;
 import java.util.List;

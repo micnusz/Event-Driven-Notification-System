@@ -1,10 +1,10 @@
-package com.micnusz.edns.Integration;
+package com.micnusz.edns.integration;
 
-import com.micnusz.edns.dto.EventRequest;
-import com.micnusz.edns.dto.EventResponse;
+import com.micnusz.edns.event.dto.EventRequest;
+import com.micnusz.edns.event.dto.EventResponse;
 import com.micnusz.edns.enums.EventType;
 import com.micnusz.edns.model.Event;
-import com.micnusz.edns.repository.EventRepository;
+import com.micnusz.edns.event.repository.EventRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
