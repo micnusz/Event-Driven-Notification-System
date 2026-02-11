@@ -1,7 +1,7 @@
 package com.micnusz.edns.service;
 
 
-import com.micnusz.edns.dto.NotificationResponse;
+import com.micnusz.edns.notification.dto.NotificationResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

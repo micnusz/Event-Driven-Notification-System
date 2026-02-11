@@ -1,4 +1,4 @@
-package com.micnusz.edns.enums;
+package com.micnusz.edns.event.enums;
 
 public enum EventType {
     TASK_ASSIGNED,

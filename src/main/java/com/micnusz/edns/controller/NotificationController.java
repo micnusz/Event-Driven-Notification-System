@@ -1,6 +1,6 @@
 package com.micnusz.edns.controller;
 
-import com.micnusz.edns.dto.NotificationResponse;
+import com.micnusz.edns.notification.dto.NotificationResponse;
 import com.micnusz.edns.service.WebSocketNotificationChannel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

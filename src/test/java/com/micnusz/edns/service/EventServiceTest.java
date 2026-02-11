@@ -2,7 +2,7 @@ package com.micnusz.edns.service;
 
 import com.micnusz.edns.event.dto.EventRequest;
 import com.micnusz.edns.event.dto.EventResponse;
-import com.micnusz.edns.enums.EventType;
+import com.micnusz.edns.event.enums.EventType;
 import com.micnusz.edns.event.service.EventService;
 import com.micnusz.edns.model.EventEnvelope;
 import org.junit.jupiter.api.Test;

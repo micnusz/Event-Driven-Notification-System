@@ -2,7 +2,8 @@ package com.micnusz.edns.event.handler;
 
 import com.micnusz.edns.event.service.EventPersistenceService;
 import com.micnusz.edns.model.EventEnvelope;
-import com.micnusz.edns.service.NotificationService;
+import com.micnusz.edns.notification.NotificationCommand;
+import com.micnusz.edns.notification.service.NotificationApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,13 +12,14 @@ import org.springframework.stereotype.Service;
 public class EventHandler {
 
     private final EventPersistenceService eventPersistenceService;
-    private final NotificationService notificationService;
+    private final NotificationApplicationService notificationApplicationService;
 
     public void handle(EventEnvelope envelope) {
 
         eventPersistenceService.save(envelope);
 
-        notificationService.processEvent(envelope);
+        NotificationCommand notificationCommand = NotificationCommand.from(envelope);
+        notificationApplicationService.handle(notificationCommand);
     }
 }
 

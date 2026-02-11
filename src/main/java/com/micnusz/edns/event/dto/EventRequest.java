@@ -1,6 +1,6 @@
 package com.micnusz.edns.event.dto;
 
-import com.micnusz.edns.enums.EventType;
+import com.micnusz.edns.event.enums.EventType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

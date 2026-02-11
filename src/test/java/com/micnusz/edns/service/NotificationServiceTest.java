@@ -1,7 +1,7 @@
 package com.micnusz.edns.service;
 
-import com.micnusz.edns.dto.NotificationResponse;
-import com.micnusz.edns.enums.EventType;
+import com.micnusz.edns.notification.dto.NotificationResponse;
+import com.micnusz.edns.event.enums.EventType;
 import com.micnusz.edns.model.EventEnvelope;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
