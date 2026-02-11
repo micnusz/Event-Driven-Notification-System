@@ -3,7 +3,6 @@ package com.micnusz.edns.integration;
 import com.micnusz.edns.event.dto.EventRequest;
 import com.micnusz.edns.event.dto.EventResponse;
 import com.micnusz.edns.event.enums.EventType;
-import com.micnusz.edns.model.Event;
 import com.micnusz.edns.event.repository.EventRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

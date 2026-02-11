@@ -1,11 +1,12 @@
 package com.micnusz.edns.service;
 
-import com.micnusz.edns.dto.UserRequest;
-import com.micnusz.edns.dto.UserResponse;
-import com.micnusz.edns.exception.EmailAlreadyExistsException;
-import com.micnusz.edns.mapper.UserMapper;
-import com.micnusz.edns.model.User;
-import com.micnusz.edns.repository.UserRepository;
+import com.micnusz.edns.user.dto.UserRequest;
+import com.micnusz.edns.user.dto.UserResponse;
+import com.micnusz.edns.error.exception.EmailAlreadyExistsException;
+import com.micnusz.edns.user.mapper.UserMapper;
+import com.micnusz.edns.user.entity.UserEntity;
+import com.micnusz.edns.user.repository.UserRepository;
+import com.micnusz.edns.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -45,11 +46,11 @@ class UserServiceTest {
         // Given
         UserRequest request = new UserRequest(TEST_EMAIL);
 
-        User user = User.builder()
+        UserEntity user = UserEntity.builder()
                 .email(TEST_EMAIL)
                 .build();
 
-        User savedUser = User.builder()
+        UserEntity savedUser = UserEntity.builder()
                 .id(TEST_USER_ID)
                 .email(TEST_EMAIL)
                 .enabled(true)
@@ -87,7 +88,7 @@ class UserServiceTest {
         // Given
         UserRequest request = new UserRequest(TEST_EMAIL);
 
-        User existingUser = User.builder()
+        UserEntity existingUser = UserEntity.builder()
                 .id(TEST_USER_ID)
                 .email(TEST_EMAIL)
                 .enabled(true)
@@ -111,14 +112,14 @@ class UserServiceTest {
     @Test
     void shouldGetAllUsers() {
         // Given
-        User user1 = User.builder()
+        UserEntity user1 = UserEntity.builder()
                 .id(TEST_USER_ID)
                 .email(TEST_EMAIL)
                 .enabled(true)
                 .createdAt(TEST_CREATED_AT)
                 .build();
 
-        User user2 = User.builder()
+        UserEntity user2 = UserEntity.builder()
                 .id(TEST_OTHER_USER_ID)
                 .email(TEST_OTHER_EMAIL)
                 .enabled(true)
@@ -158,7 +159,7 @@ class UserServiceTest {
                 );
 
         verify(userRepository).findAll();
-        verify(userMapper, times(2)).toDto(any(User.class));
+        verify(userMapper, times(2)).toDto(any(UserEntity.class));
     }
 
     @Test
@@ -181,7 +182,7 @@ class UserServiceTest {
         // Given
         UserRequest request = new UserRequest(TEST_EMAIL);
 
-        User userWithId = User.builder()
+        UserEntity userWithId = UserEntity.builder()
                 .id(TEST_USER_ID)
                 .email(TEST_EMAIL)
                 .createdAt(TEST_CREATED_AT)
@@ -213,16 +214,16 @@ class UserServiceTest {
         UserRequest request1 = new UserRequest("user1@example.com");
         UserRequest request2 = new UserRequest("user2@example.com");
 
-        User user1 = User.builder().email("user1@example.com").build();
-        User user2 = User.builder().email("user2@example.com").build();
+        UserEntity user1 = UserEntity.builder().email("user1@example.com").build();
+        UserEntity user2 = UserEntity.builder().email("user2@example.com").build();
 
-        User savedUser1 = User.builder()
+        UserEntity savedUser1 = UserEntity.builder()
                 .id(UUID.randomUUID())
                 .email("user1@example.com")
                 .createdAt(TEST_CREATED_AT)
                 .build();
 
-        User savedUser2 = User.builder()
+        UserEntity savedUser2 = UserEntity.builder()
                 .id(UUID.randomUUID())
                 .email("user2@example.com")
                 .createdAt(TEST_CREATED_AT.plusMinutes(1))
@@ -259,6 +260,6 @@ class UserServiceTest {
         assertThat(response1.getId()).isNotEqualTo(response2.getId());
 
         verify(userRepository, times(2)).findByEmail(anyString());
-        verify(userRepository, times(2)).save(any(User.class));
+        verify(userRepository, times(2)).save(any(UserEntity.class));
     }
 }

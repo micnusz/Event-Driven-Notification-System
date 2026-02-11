@@ -2,7 +2,6 @@ package com.micnusz.edns.event.repository;
 
 import com.micnusz.edns.event.enums.EventType;
 import com.micnusz.edns.event.entity.EventEntity;
-import com.micnusz.edns.model.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

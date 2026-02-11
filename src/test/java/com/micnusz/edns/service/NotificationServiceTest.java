@@ -3,6 +3,7 @@ package com.micnusz.edns.service;
 import com.micnusz.edns.notification.dto.NotificationResponse;
 import com.micnusz.edns.event.enums.EventType;
 import com.micnusz.edns.model.EventEnvelope;
+import com.micnusz.edns.websocket.service.WebSocketNotificationChannel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

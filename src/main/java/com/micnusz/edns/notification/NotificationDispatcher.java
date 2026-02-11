@@ -2,7 +2,7 @@ package com.micnusz.edns.notification;
 
 import com.micnusz.edns.notification.builder.NotificationMessageBuilder;
 import com.micnusz.edns.notification.dto.NotificationResponse;
-import com.micnusz.edns.service.WebSocketNotificationChannel;
+import com.micnusz.edns.websocket.service.WebSocketNotificationChannel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +12,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationDispatcher {
 
-    private final List<NotificationMessageBuilder> builders;
-    private final WebSocketNotificationChannel channel;
+    private final List<NotificationMessageBuilder> notificationMessageBuilders;
+    private final WebSocketNotificationChannel webSocketNotificationChannel;
 
     public void dispatch(NotificationCommand notificationCommand) {
 
-        NotificationMessageBuilder builder = builders.stream()
+        NotificationMessageBuilder builder = notificationMessageBuilders.stream()
                 .filter(b -> b.supports() == notificationCommand.type())
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException(
@@ -29,6 +29,6 @@ public class NotificationDispatcher {
 
         NotificationResponse response = NotificationResponse.from(notificationCommand, title, message);
 
-        channel.sendToUser(notificationCommand.recipientId(), response);
+        webSocketNotificationChannel.sendToUser(notificationCommand.recipientId(), response);
     }
 }
