@@ -1,7 +1,7 @@
 package com.micnusz.edns.notification.dto;
 
 import com.micnusz.edns.event.dto.EventEnvelope;
-import com.micnusz.edns.event.dto.EventPayload;
+import com.micnusz.edns.event.payload.EventPayload;
 import com.micnusz.edns.notification.NotificationCommand;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.util.Map;
 import java.util.UUID;
 
 @Data

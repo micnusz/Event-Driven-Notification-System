@@ -1,11 +1,9 @@
 package com.micnusz.edns.notification.builder;
 
-import com.micnusz.edns.event.dto.EventPayload;
+import com.micnusz.edns.event.payload.EventPayload;
 import com.micnusz.edns.event.enums.EventType;
-import com.micnusz.edns.notification.NotificationCommand;
+import com.micnusz.edns.event.payload.TaskAssignedPayload;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 @Component
 public class TaskAssignedNotificationBuilder implements NotificationMessageBuilder {
@@ -22,14 +20,15 @@ public class TaskAssignedNotificationBuilder implements NotificationMessageBuild
 
     @Override
     public String buildMessage(EventPayload payload) {
-        String taskName = payload.getTaskName();
-        String taskDescription = payload.getTaskDescription();
-
-        if (taskName == null || taskName.isBlank()) {
-            throw new IllegalArgumentException("Task name is required");
+        if (!(payload instanceof TaskAssignedPayload taskPayload)) {
+            throw new IllegalArgumentException("Invalid payload type for TASK_ASSIGNED");
         }
 
-        return String.format("New task: %s - %s", taskName, taskDescription);
+        return String.format("New task '%s' assigned by %s. %s",
+                taskPayload.getTaskName(),
+                taskPayload.getAssignedBy(),
+                taskPayload.getTaskDescription()
+        );
     }
 }
 
