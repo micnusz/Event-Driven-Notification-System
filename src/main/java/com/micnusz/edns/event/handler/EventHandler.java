@@ -26,11 +26,10 @@ public class EventHandler {
 
         }catch (DataIntegrityViolationException exception) {
             log.info("Duplicate event detected. eventId={}", envelope.getEventId());
-
+            return;
         }
         NotificationCommand notificationCommand = NotificationCommand.from(envelope);
         notificationApplicationService.handle(notificationCommand);
-
 
     }
 }
