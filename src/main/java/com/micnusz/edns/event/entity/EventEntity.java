@@ -1,5 +1,7 @@
 package com.micnusz.edns.event.entity;
 
+import com.micnusz.edns.event.dto.EventPayload;
+import com.micnusz.edns.event.enums.EventType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -23,12 +25,13 @@ public class EventEntity {
     @Id
     private UUID id;
 
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private EventType type;
 
     private String recipientId;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> payload;
+    private EventPayload payload;
 
     private Instant occurredAt;
 }

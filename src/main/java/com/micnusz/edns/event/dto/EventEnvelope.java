@@ -19,6 +19,6 @@ public class EventEnvelope {
         EventType type;
         String recipientId;
         Instant occurredAt;
-        Map<String, Object> payload;
+        EventPayload payload;
         int version;
 }

@@ -1,6 +1,7 @@
 package com.micnusz.edns.event.dto;
 
 import com.micnusz.edns.event.enums.EventType;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +13,11 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 public class EventRequest {
-            EventType type;
-            String recipientId;
-            Map<String, Object> payload;
+    @NotBlank
+    EventType type;
+    @NotBlank
+    String recipientId;
+    EventPayload payload;
 
 }
 
