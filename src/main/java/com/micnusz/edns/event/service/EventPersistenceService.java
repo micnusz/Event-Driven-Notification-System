@@ -16,15 +16,9 @@ public class EventPersistenceService {
     private final EventRepository eventRepository;
     private final EventPersistenceMapper eventPersistenceMapper;
 
-    @Transactional
+
     public void save(EventEnvelope envelope) {
-
-        if (eventRepository.existsById(envelope.getEventId())) {
-            return;
-        }
-
         EventEntity entity = eventPersistenceMapper.toEntity(envelope);
-
         eventRepository.save(entity);
     }
 }
