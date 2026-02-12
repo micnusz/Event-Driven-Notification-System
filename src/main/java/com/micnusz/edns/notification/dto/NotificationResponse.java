@@ -1,6 +1,7 @@
 package com.micnusz.edns.notification.dto;
 
 import com.micnusz.edns.event.dto.EventEnvelope;
+import com.micnusz.edns.event.dto.EventPayload;
 import com.micnusz.edns.notification.NotificationCommand;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +23,7 @@ public class NotificationResponse {
     private String title;
     private String message;
     private Instant timestamp;
-    private Map<String, Object> data;
+    private EventPayload paylod;
 
     public static NotificationResponse from(EventEnvelope event, String title, String message) {
         return NotificationResponse.builder()
@@ -31,7 +32,7 @@ public class NotificationResponse {
                 .title(title)
                 .message(message)
                 .timestamp(event.getOccurredAt())
-                .data(event.getPayload())
+                .paylod(event.getPayload())
                 .build();
     }
 
@@ -42,7 +43,7 @@ public class NotificationResponse {
                 .title(title)
                 .message(message)
                 .timestamp(Instant.now())
-                .data(command.payload())
+                .paylod(command.payload())
                 .build();
     }
 }

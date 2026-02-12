@@ -10,7 +10,7 @@ public class EventPersistenceMapper {
     public EventEntity toEntity(EventEnvelope envelope) {
         return EventEntity.builder()
                 .id(envelope.getEventId())
-                .type(envelope.getType().name())
+                .type(envelope.getType())
                 .recipientId(envelope.getRecipientId())
                 .payload(envelope.getPayload())
                 .occurredAt(envelope.getOccurredAt())

@@ -23,11 +23,12 @@ public class NotificationDispatcher {
                 .findFirst()
                 .orElseThrow(() -> new InvalidNotificationTypeException(notificationCommand.type()));
 
-        String title = builder.buildTitle(notificationCommand);
-        String message = builder.buildMessage(notificationCommand);
+        String title = builder.buildTitle(notificationCommand.payload());
+        String message = builder.buildMessage(notificationCommand.payload());
 
         NotificationResponse response = NotificationResponse.from(notificationCommand, title, message);
 
         webSocketNotificationChannel.sendToUser(notificationCommand.recipientId(), response);
     }
 }
+

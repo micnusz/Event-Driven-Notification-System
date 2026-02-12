@@ -1,5 +1,6 @@
 package com.micnusz.edns.notification.builder;
 
+import com.micnusz.edns.event.dto.EventPayload;
 import com.micnusz.edns.event.enums.EventType;
 import com.micnusz.edns.notification.NotificationCommand;
 import org.springframework.stereotype.Component;
@@ -15,25 +16,20 @@ public class TaskAssignedNotificationBuilder implements NotificationMessageBuild
     }
 
     @Override
-    public String buildTitle(NotificationCommand command) {
+    public String buildTitle(EventPayload payload) {
         return "New Task Assigned";
     }
 
     @Override
-    public String buildMessage(NotificationCommand command) {
+    public String buildMessage(EventPayload payload) {
+        String taskName = payload.getTaskName();
+        String taskDescription = payload.getTaskDescription();
 
-        String taskName = getRequired(command.payload(), "taskName");
-        String assignedBy = getRequired(command.payload(), "assignedBy");
-
-        return "New task: " + taskName + " assigned by " + assignedBy;
-    }
-
-    private String getRequired(Map<String, Object> payload, String key) {
-        Object value = payload.get(key);
-        if (value == null) {
-            throw new IllegalArgumentException("Missing required field: " + key);
+        if (taskName == null || taskName.isBlank()) {
+            throw new IllegalArgumentException("Task name is required");
         }
-        return value.toString();
+
+        return String.format("New task: %s - %s", taskName, taskDescription);
     }
 }
 

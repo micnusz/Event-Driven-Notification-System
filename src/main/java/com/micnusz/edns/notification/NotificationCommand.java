@@ -1,5 +1,6 @@
 package com.micnusz.edns.notification;
 
+import com.micnusz.edns.event.dto.EventPayload;
 import com.micnusz.edns.event.enums.EventType;
 import com.micnusz.edns.event.dto.EventEnvelope;
 
@@ -10,7 +11,7 @@ public record NotificationCommand(
         UUID eventId,
         EventType type,
         String recipientId,
-        Map<String, Object> payload
+        EventPayload payload
 ) {
     public static NotificationCommand from(EventEnvelope envelope) {
         return new NotificationCommand(
