@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class EventDLQConsumer {
 
-    @KafkaListener(topics = "events.DLT", groupId = "dlq-monitor")
+    @KafkaListener(topics = "events-dlt", groupId = "dlq-monitor")
     public void consumeDeadLetter(
             @Payload EventEnvelope envelope,
             @Header(KafkaHeaders.EXCEPTION_MESSAGE) String error) {

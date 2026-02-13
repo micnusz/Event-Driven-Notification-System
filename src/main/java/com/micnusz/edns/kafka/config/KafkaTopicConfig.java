@@ -34,7 +34,7 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic eventsDeadLetterTopic() {
-        return TopicBuilder.name("events.DLT")
+        return TopicBuilder.name("events-dlt")
                 .partitions(1)
                 .replicas(1)
                 .build();

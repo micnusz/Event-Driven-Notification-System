@@ -23,5 +23,8 @@ public class EventRequest {
     @NotNull
     EventPayload payload;
 
+    @NotBlank
+    private String idempotencyKey;
+
 }
 

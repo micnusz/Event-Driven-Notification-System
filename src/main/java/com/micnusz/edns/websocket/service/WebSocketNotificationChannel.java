@@ -14,9 +14,8 @@ public class WebSocketNotificationChannel {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-
     public void sendToUser(String recipientId, NotificationResponse response) {
-        log.info("🌐 Sending WebSocket notification to user: {}", recipientId);
+        log.info("Sending WebSocket notification to user: {}", recipientId);
         simpMessagingTemplate.convertAndSendToUser(
                 recipientId,
                 "/queue/notifications",
@@ -25,7 +24,7 @@ public class WebSocketNotificationChannel {
     }
 
     public void broadcast(NotificationResponse response) {
-        log.info("📢 Broadcasting WebSocket notification to all users");
+        log.info("Broadcasting WebSocket notification to all users");
         simpMessagingTemplate.convertAndSend("/topic/notifications", response);
     }
 }
