@@ -16,9 +16,8 @@ public class WebSocketNotificationChannel {
 
     public void sendToUser(String recipientId, NotificationResponse response) {
         log.info("Sending WebSocket notification to user: {}", recipientId);
-        simpMessagingTemplate.convertAndSendToUser(
-                recipientId,
-                "/queue/notifications",
+        simpMessagingTemplate.convertAndSend(
+                "/topic/notifications/" + recipientId,
                 response
         );
     }

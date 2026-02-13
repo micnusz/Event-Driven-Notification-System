@@ -22,7 +22,7 @@ public class NotificationResponse {
     private String title;
     private String message;
     private Instant timestamp;
-    private EventPayload paylod;
+    private EventPayload payload;
 
     public static NotificationResponse from(EventEnvelope event, String title, String message) {
         return NotificationResponse.builder()
@@ -31,7 +31,7 @@ public class NotificationResponse {
                 .title(title)
                 .message(message)
                 .timestamp(event.getOccurredAt())
-                .paylod(event.getPayload())
+                .payload(event.getPayload())
                 .build();
     }
 
@@ -42,7 +42,7 @@ public class NotificationResponse {
                 .title(title)
                 .message(message)
                 .timestamp(Instant.now())
-                .paylod(command.payload())
+                .payload(command.payload())
                 .build();
     }
 }

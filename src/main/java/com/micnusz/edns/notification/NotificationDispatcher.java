@@ -28,7 +28,8 @@ public class NotificationDispatcher {
 
         NotificationResponse response = NotificationResponse.from(notificationCommand, title, message);
 
-        webSocketNotificationChannel.sendToUser(notificationCommand.recipientId(), response);
+        webSocketNotificationChannel.broadcast(response);
+//        webSocketNotificationChannel.sendToUser(notificationCommand.recipientId(), response);
     }
 }
 

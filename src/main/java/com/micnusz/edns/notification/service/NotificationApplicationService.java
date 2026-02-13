@@ -20,12 +20,6 @@ public class NotificationApplicationService {
                 notificationCommand.recipientId(),
                 notificationCommand.type());
 
-        if (notificationCommand.recipientId().startsWith("dlq-")) {
-            log.error("🔥 DLQ TEST: Forcing failure for recipient: {}",
-                    notificationCommand.recipientId());
-            throw new RuntimeException("DLQ test - simulated persistent error");
-        }
-
         notificationDispatcher.dispatch(notificationCommand);
     }
 }
