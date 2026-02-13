@@ -23,13 +23,6 @@ public class KafkaProducerConfig {
     private String bootstrapServers;
 
     @Bean
-    public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        return mapper;
-    }
-
-    @Bean
     public ProducerFactory<String, EventEnvelope> producerFactory(ObjectMapper objectMapper) {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
