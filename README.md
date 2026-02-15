@@ -15,45 +15,81 @@ Event driven notification system created with Spring Boot, Kafka, Docker, and Po
 
 - ## 🏗️ Architecture
 ````mermaid
-flowchart LR
-
-    subgraph Client
-        C1[Web UI]
-        C2[External API Client]
+flowchart TB
+    subgraph Client["<b>CLIENT LAYER</b>"]
+        UI["Live Demo UI<br/>(http://localhost:8080/)"]
+        API["REST Client<br/>(curl / Postman)"]
     end
-
-    subgraph Application
-        API[REST API<br/>Idempotent Endpoint]
-        Producer[Kafka Producer]
-        Consumer[Kafka Consumer<br/>Retry + Backoff]
-        WS[WebSocket Broker]
+    
+    subgraph Spring["<b>SPRING BOOT</b>"]
+        direction TB
+        
+        subgraph API_Layer["API Layer"]
+            Controller["EventController<br/>POST /api/events<br/>GET /api/events/recent"]
+        end
+        
+        subgraph Business["Business Logic"]
+            EventAppService["EventApplicationService<br/>- Idempotency Check<br/>"]
+            EventHandler["EventHandler<br/>- Duplicate check<br/>- Notification Trigger"]
+            EventPerService["EventPersistenceService"]
+            NotifAppService["NotificationApplicationService"]
+            NotifDisService["NotificationDispatcher<br/>- Message Builder<br/>"]
+        end
+        
+        subgraph Integration["Integration Layer"]
+            Producer["Kafka Producer"]
+            Consumer["Kafka Consumer<br/>- Retry Logic (3x)<br/>- Exponential Backoff"]
+            WSChannel["WebSocketNotificationChannel<br/>- Broadcast<br/>- User-specific"]
+        end
     end
-
-    subgraph Kafka Cluster
-        T1[(Topic: events)]
-        T2[(Topic: events-dlt)]
+    
+    subgraph Infrastructure["<b>INFRASTRUCTURE</b>"]
+        Kafka[("Apache Kafka<br/><b>Topic: events</b><br/>")]
+        DLQ[("Apache Kafka Dead Letter Queue<br/><b>Topic: events-dlt</b><br/>")]
+        DB[("PostgreSQL<br/><b>events table</b><br/>")]
     end
-
-    subgraph Database
-        DB[(PostgreSQL)]
-    end
-
-    C1 --> API
-    C2 --> API
-
-    API -->|Check idempotency| DB
-    API --> Producer
-    Producer --> T1
-
-    T1 --> Consumer
-
-    Consumer -->|Persist event| DB
-    Consumer -->|Emit notification| WS
-
-    Consumer -->|3 failed attempts| T2
-
-    WS --> C1
-
+    
+    %% Main Flow
+    API -->|"POST /api/events<br/>"| Controller
+    Controller -->|"Process"| EventAppService
+    EventAppService -.->|"Check if exists"| DB
+    EventAppService -->|"Publish event"| Producer
+    Producer -->|"Send event"| Kafka
+    
+    Kafka -->|"Consume event"| Consumer
+    Consumer -->|"Process"| EventHandler
+    
+    EventHandler -->|"Process"| EventPerService
+    EventPerService --> |"Persist"| DB
+    EventHandler -->|"Notify"| NotifAppService
+    
+    NotifAppService --> |"Process"| NotifDisService
+    NotifDisService -->|"Process"| WSChannel
+    
+    %% WebSocket back to UI
+    WSChannel -.->|"Real-time push"| UI
+    
+    %% Load history
+    UI -->|"GET /api/events/recent"| Controller
+    Controller -->|"Query 50 recent"| DB
+    
+    %% DLQ Flow
+    Consumer -.->|"Failed 3x<br/>(1s, 2s, 4s)"| DLQ
+    
+    %% Styling
+    classDef clientStyle fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
+    classDef springStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px,color:#000
+    classDef kafkaStyle fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
+    classDef dbStyle fill:#e8f5e9,stroke:#388e3c,stroke-width:3px,color:#000
+    classDef dlqStyle fill:#ffebee,stroke:#d32f2f,stroke-width:3px,color:#000
+    classDef wsStyle fill:#fce4ec,stroke:#c2185b,stroke-width:3px,color:#000
+    
+    class UI,API clientStyle
+    class Controller,EventAppService,EventHandler,EventPerService,NotifAppService,NotifDisService,Producer,Consumer springStyle
+    class Kafka kafkaStyle
+    class DB dbStyle
+    class DLQ dlqStyle
+    class WSChannel wsStyle
 ````
 
 ## 🛠️ Tech Stack
