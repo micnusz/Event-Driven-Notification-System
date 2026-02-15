@@ -15,58 +15,45 @@ Event driven notification system created with Spring Boot, Kafka, Docker, and Po
 
 - ## 🏗️ Architecture
 ````mermaid
-graph TB
-    subgraph "Client"
-        UI[Demo UI<br/>localhost:8080]
-        API[REST API Client<br/>curl/Postman]
+flowchart LR
+
+    subgraph Client
+        C1[Web UI]
+        C2[External API Client]
     end
-    
-    subgraph "Spring Boot Application"
-        Controller[EventController<br/>POST /api/events<br/>GET /api/events/recent]
-        Service[EventApplicationService<br/>+ Idempotency Check]
+
+    subgraph Application
+        API[REST API<br/>Idempotent Endpoint]
         Producer[Kafka Producer]
-        Consumer[Kafka Consumer<br/>+ Retry Logic]
-        Handler[EventHandler]
-        Persistence[EventPersistenceService]
-        NotifService[NotificationApplicationService]
-        Dispatcher[NotificationDispatcher]
-        Builders[Notification Builders<br/>TaskAssigned, SystemAlert, etc.]
-        WSChannel[WebSocket Channel]
+        Consumer[Kafka Consumer<br/>Retry + Backoff]
+        WS[WebSocket Broker]
     end
-    
-    subgraph "Infrastructure"
-        Kafka[(Apache Kafka<br/>Topic: events)]
-        DLQ[(Dead Letter Queue<br/>Topic: events-dlt)]
-        DB[(PostgreSQL<br/>events table)]
+
+    subgraph Kafka Cluster
+        T1[(Topic: events)]
+        T2[(Topic: events-dlt)]
     end
-    
-    API -->|1. POST event| Controller
-    Controller --> Service
-    Service -->|2. Check duplicate| DB
-    Service -->|3. Publish| Producer
-    Producer -->|4. Send| Kafka
-    
-    Kafka -->|5. Consume| Consumer
-    Consumer -->|6. Process| Handler
-    Handler -->|7a. Save| Persistence
-    Persistence --> DB
-    Handler -->|7b. Notify| NotifService
-    NotifService --> Dispatcher
-    Dispatcher --> Builders
-    Builders -->|8. Build message| Dispatcher
-    Dispatcher --> WSChannel
-    
-    Consumer -.->|Retry 3x fails| DLQ
-    
-    WSChannel -->|9. Real-time| UI
-    UI -->|10. Load history| Controller
-    Controller -->|Query| DB
-    
-    style Kafka fill:#ff6b6b
-    style DLQ fill:#feca57
-    style DB fill:#48dbfb
-    style UI fill:#1dd1a1
-    style WSChannel fill:#ee5a6f
+
+    subgraph Database
+        DB[(PostgreSQL)]
+    end
+
+    C1 --> API
+    C2 --> API
+
+    API -->|Check idempotency| DB
+    API --> Producer
+    Producer --> T1
+
+    T1 --> Consumer
+
+    Consumer -->|Persist event| DB
+    Consumer -->|Emit notification| WS
+
+    Consumer -->|3 failed attempts| T2
+
+    WS --> C1
+
 ````
 
 ## 🛠️ Tech Stack
