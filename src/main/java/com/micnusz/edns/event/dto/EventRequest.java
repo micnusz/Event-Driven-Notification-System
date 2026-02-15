@@ -16,14 +16,11 @@ import lombok.NoArgsConstructor;
 public class EventRequest {
     @NotNull
     EventType type;
-
     @NotBlank
     String recipientId;
-
     @NotNull
     EventPayload payload;
 
-    @NotBlank
     private String idempotencyKey;
 
 }

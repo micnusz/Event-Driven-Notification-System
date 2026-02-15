@@ -25,13 +25,23 @@ public class EventApplicationService {
 
     public EventResponse createEvent(EventRequest request) {
 
-        UUID eventId = UUID.nameUUIDFromBytes(
-                request.getIdempotencyKey().getBytes(StandardCharsets.UTF_8)
-        );
+        UUID eventId;
 
-        if (eventRepository.existsById(eventId)) {
-            log.info("Duplicate request ignored. idempotencyKey={}", request.getIdempotencyKey());
-            return new EventResponse(eventId);
+        if (request.getIdempotencyKey() != null && !request.getIdempotencyKey().isBlank()) {
+            eventId = UUID.nameUUIDFromBytes(
+                    request.getIdempotencyKey().getBytes(StandardCharsets.UTF_8)
+            );
+
+            if (eventRepository.existsById(eventId)) {
+                log.info("Duplicate request ignored. idempotencyKey={}", request.getIdempotencyKey());
+                return new EventResponse(eventId);
+            }
+
+            log.info("Using client-provided idempotency key: {}", request.getIdempotencyKey());
+
+        } else {
+            eventId = UUID.randomUUID();
+            log.info("No idempotency key provided, generated UUID: {}", eventId);
         }
 
         EventEnvelope envelope = new EventEnvelope(
@@ -44,7 +54,10 @@ public class EventApplicationService {
         );
 
         eventProducer.publish(envelope);
-        log.info("Event created. eventId={} idempotencyKey={}", eventId, request.getIdempotencyKey());
+
+        log.info("Event created. eventId={} idempotencyKey={}",
+                eventId,
+                request.getIdempotencyKey() != null ? request.getIdempotencyKey() : "none");
 
         return new EventResponse(eventId);
     }
