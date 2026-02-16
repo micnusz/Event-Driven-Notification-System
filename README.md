@@ -19,7 +19,7 @@ Event driven notification system created with Spring Boot, Kafka, Docker, and Po
 
 ---
 
-- ## Architecture
+## Architecture
 ````mermaid
 flowchart TB
     subgraph Client["<b>CLIENT LAYER</b>"]
@@ -179,8 +179,7 @@ Watch it appear in real-time at http://localhost:8080
 - **Grafana**: http://localhost:3000
 - **Kafka topics**: 
 ```bash
-  docker exec -it edns-backend-kafka-1 /opt/kafka/bin/kafka-topics.sh \
-    --bootstrap-server localhost:9092 --list
+docker exec -it edns-backend-kafka-1 /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
 ```
 
 ---
