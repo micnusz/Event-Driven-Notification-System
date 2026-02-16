@@ -5,6 +5,7 @@ import com.micnusz.edns.event.dto.EventRequest;
 import com.micnusz.edns.event.dto.EventResponse;
 import com.micnusz.edns.event.producer.EventProducer;
 import com.micnusz.edns.event.repository.EventRepository;
+import com.micnusz.edns.metrics.EventMetrics;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class EventApplicationService {
 
     private final EventProducer eventProducer;
     private final EventRepository eventRepository;
+    private final EventMetrics eventMetrics;
 
     public EventResponse createEvent(EventRequest request) {
 
@@ -34,6 +36,10 @@ public class EventApplicationService {
 
             if (eventRepository.existsById(eventId)) {
                 log.info("Duplicate request ignored. idempotencyKey={}", request.getIdempotencyKey());
+
+                // Metric
+                eventMetrics.recordEventDuplicated();
+
                 return new EventResponse(eventId);
             }
 
@@ -53,7 +59,12 @@ public class EventApplicationService {
                 1
         );
 
+        long startTime = System.currentTimeMillis();
         eventProducer.publish(envelope);
+
+        // Metric
+        eventMetrics.recordKafkaPublishTime(startTime);
+        eventMetrics.recordEventCreated();
 
         log.info("Event created. eventId={} idempotencyKey={}",
                 eventId,
