@@ -20,10 +20,12 @@ public class EventDLQConsumer {
     @KafkaListener(topics = "events-dlt", groupId = "dlq-monitor",  containerFactory = "dlqKafkaListenerContainerFactory")
     public void consumeDeadLetter(
             @Payload EventEnvelope envelope,
-            @Header(KafkaHeaders.EXCEPTION_MESSAGE) String error) {
+            @Header(value = "kafka_dlt-exception-message", required = false) byte[] errorBytes) {
 
         //Metric
         eventMetrics.recordEventSentToDLQ();
+
+        String error = errorBytes != null ? new String(errorBytes) : "Unknown error";
 
         try {
             log.error("""

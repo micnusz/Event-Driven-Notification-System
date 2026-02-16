@@ -2,18 +2,22 @@
 
 Event driven notification system created with Spring Boot, Kafka, Docker, and PostgreSQL.
 
-![Demo](docs/demo.gif)
+---
 
+![GrafanaDashboard](./docs/images/Grafana-Dashboard.png)
 
-## Features
+---
 
+## Core Functionality
 - **Event-driven architecture** with Apache Kafka
+- **Exactly-once delivery** through idempotent producer and transactional processing
+- **Dead Letter Queue** with exponential backoff retry
+- **Production monitoring**: Prometheus metrics + Grafana dashboards tracking
 - **Real-time WebSocket notifications** (broadcast + user-specific)
-- **Dead Letter Queue** for failed events with retry mechanism
-- **Idempotency** at API and Kafka level
-- **Polymorphic event payloads**
-- **Visual demo UI** for testing
+- **Polymorphic event payloads** with Strategy Pattern
+- **Live demo UI** with real-time updates and persistent event history
 
+---
 
 - ## Architecture
 ````mermaid
@@ -49,6 +53,8 @@ flowchart TB
         Kafka[("Apache Kafka<br/><b>Topic: events</b><br/>")]
         DLQ[("Apache Kafka Dead Letter Queue<br/><b>Topic: events-dlt</b><br/>")]
         DB[("PostgreSQL<br/><b>events table</b><br/>")]
+        Prom[("PrometheusMetrics Storage")]
+        Graf[("GrafanaDashboards")]
     end
     
     %% Main Flow
@@ -77,6 +83,10 @@ flowchart TB
     
     %% DLQ Flow
     Consumer -.->|"Failed 3x<br/>(1s, 2s, 4s)"| DLQ
+
+    %% Monitoring
+    Spring -.->|"Expose metrics"| Prom
+    Prom -.->|"Query data"| Graf
     
     %% Styling
     classDef clientStyle fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
@@ -85,6 +95,7 @@ flowchart TB
     classDef dbStyle fill:#e8f5e9,stroke:#388e3c,stroke-width:3px,color:#000
     classDef dlqStyle fill:#ffebee,stroke:#d32f2f,stroke-width:3px,color:#000
     classDef wsStyle fill:#fce4ec,stroke:#c2185b,stroke-width:3px,color:#000
+    classDef monitorStyle fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#000
     
     class UI,API clientStyle
     class Controller,EventAppService,EventHandler,EventPerService,NotifAppService,NotifDisService,Producer,Consumer springStyle
@@ -92,30 +103,41 @@ flowchart TB
     class DB dbStyle
     class DLQ dlqStyle
     class WSChannel wsStyle
+    class Prom,Graf monitorStyle
 ````
 
+---
 
 ## Event Flow Explained
 
-1. **Client** sends POST request with event data
-2. **EventApplicationService** checks if event already exists (idempotency)
-3. **Kafka Producer** publishes to `events` topic (async, non-blocking)
-4. **Kafka Consumer** receives event with retry mechanism
-5. **EventHandler** coordinates two actions:
+1. **Client** sends POST request with event data + optional `idempotencyKey`
+2. **EventApplicationService** checks if event already exists (idempotency check)
+3. **Kafka Producer** publishes to `events` topic
+4. **Kafka Consumer** receives event and attempts processing. **If processing fails** → automatic retry with exponential backoff (3 attempts: 1s → 2s → 4s)
+6. **If all retries exhausted** → event moves to Dead Letter Queue for investigation
+7. **On success**: EventHandler coordinates two atomic actions:
    - Persists event to PostgreSQL
    - Triggers notification pipeline
-6. **NotificationDispatcher** uses Strategy Pattern to build message
-7. **WebSocket** sends real-time notification to connected clients
+8. **NotificationDispatcher** uses Strategy Pattern to select appropriate builder and format message
+9. **WebSocket** sends real-time notification to connected clients (broadcast or user-specific)
+   
+---
 
+![DEMOUI](./docs/images/UIDemo.png)
+
+---
 
 ## Tech Stack
-
 - Java 21
 - Spring Boot 4.0.2
 - Apache Kafka 3.7.0
 - PostgreSQL 16
-- WebSocket
-- Docker
+- Docker Compose
+- Prometheus
+- Grafana
+- Adminer
+
+---
 
 ## Quick Start
 ```bash
@@ -143,20 +165,26 @@ curl -X POST http://localhost:8080/api/events \
       "dueDate": "2026-03-01"
     }
   }'
+  
 Watch it appear in real-time at http://localhost:8080
 ```
 
+---
 
 ## Monitoring
 
 - **Demo UI**: http://localhost:8080
 - **Adminer (DB)**: http://localhost:8083
+- **Prometheus**: http://localhost:9090
+- **Grafana**: http://localhost:3000
 - **Kafka topics**: 
 ```bash
   docker exec -it edns-backend-kafka-1 /opt/kafka/bin/kafka-topics.sh \
     --bootstrap-server localhost:9092 --list
 ```
 
-## 📝 License
+---
+
+## License
 
 MIT
