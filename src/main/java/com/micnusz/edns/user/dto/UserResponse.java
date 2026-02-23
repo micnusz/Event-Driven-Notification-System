@@ -1,18 +1,7 @@
 package com.micnusz.edns.user.dto;
 
 
-import lombok.*;
-
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class UserResponse {
-    private UUID id;
-    private String email;
-    private LocalDateTime createdAt;
-}
+public record UserResponse(UUID id, String email, Instant createdAt) { }

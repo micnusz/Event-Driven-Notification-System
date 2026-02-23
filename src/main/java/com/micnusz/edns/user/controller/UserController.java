@@ -22,7 +22,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserResponse> registerUser(@RequestBody @Valid UserRequest request) {
         UserResponse response = userService.createUser(request);
-        return ResponseEntity.created(URI.create("/api/users/" + response.getId())).body(response);
+        return ResponseEntity.created(URI.create("/api/users/" + response.id())).body(response);
     }
 
     @GetMapping()
