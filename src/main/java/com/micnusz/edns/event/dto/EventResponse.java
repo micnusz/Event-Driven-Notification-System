@@ -1,15 +1,5 @@
 package com.micnusz.edns.event.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.UUID;
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class EventResponse {
-    UUID eventId;
-}
+
+public record EventResponse(UUID eventId) {}

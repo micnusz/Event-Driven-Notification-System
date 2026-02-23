@@ -50,8 +50,7 @@ class EventControllerTest {
         request.setIdempotencyKey("abc-123");
 
         UUID eventId = UUID.randomUUID();
-        EventResponse response = new EventResponse();
-        response.setEventId(eventId);
+        EventResponse response = new EventResponse(eventId);
 
         when(eventApplicationService.createEvent(request)).thenReturn(response);
 

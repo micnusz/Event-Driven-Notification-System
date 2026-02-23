@@ -31,7 +31,7 @@ public class EventController {
     @PostMapping()
     public ResponseEntity<EventResponse> createEvent(@Valid @RequestBody EventRequest request) {
         EventResponse response = eventApplicationService.createEvent(request);
-        return ResponseEntity.created(URI.create("/api/events/" + response.getEventId())).body(response);
+        return ResponseEntity.created(URI.create("/api/events/" + response.eventId())).body(response);
     }
 
     @GetMapping("/recent")
