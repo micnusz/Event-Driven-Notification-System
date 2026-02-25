@@ -1,12 +1,11 @@
 package com.micnusz.edns.notification.builder;
 
-import com.micnusz.edns.event.payload.EventPayload;
 import com.micnusz.edns.event.enums.EventType;
 import com.micnusz.edns.event.payload.TaskAssignedPayload;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TaskAssignedNotificationBuilder implements NotificationMessageBuilder {
+public class TaskAssignedNotificationBuilder implements NotificationMessageBuilder<TaskAssignedPayload> {
 
     @Override
     public EventType supports() {
@@ -14,21 +13,16 @@ public class TaskAssignedNotificationBuilder implements NotificationMessageBuild
     }
 
     @Override
-    public String buildTitle(EventPayload payload) {
+    public String buildTitle(TaskAssignedPayload payload) {
         return "New Task Assigned";
     }
 
     @Override
-    public String buildMessage(EventPayload payload) {
-        if (!(payload instanceof TaskAssignedPayload taskPayload)) {
-            throw new IllegalArgumentException("Invalid payload type for TASK_ASSIGNED");
-        }
-
+    public String buildMessage(TaskAssignedPayload payload) {
         return String.format("New task '%s' assigned by %s. %s",
-                taskPayload.getTaskName(),
-                taskPayload.getAssignedBy(),
-                taskPayload.getTaskDescription()
-        );
+                payload.taskName(),
+                payload.assignedBy(),
+                payload.taskDescription());
     }
 }
 

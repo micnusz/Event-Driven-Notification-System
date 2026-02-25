@@ -6,7 +6,7 @@ import com.micnusz.edns.event.payload.SystemAlertPayload;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SystemAlertNotificationBuilder implements NotificationMessageBuilder {
+public class SystemAlertNotificationBuilder implements NotificationMessageBuilder<SystemAlertPayload> {
 
     @Override
     public EventType supports() {
@@ -14,12 +14,8 @@ public class SystemAlertNotificationBuilder implements NotificationMessageBuilde
     }
 
     @Override
-    public String buildTitle(EventPayload payload) {
-        if (!(payload instanceof SystemAlertPayload systemPayload)) {
-            return "System Alert";
-        }
-
-        return switch (systemPayload.getSeverity().toUpperCase()) {
+    public String buildTitle(SystemAlertPayload systemAlertPayload) {
+        return switch (systemAlertPayload.severity().toUpperCase()) {
             case "CRITICAL" -> "CRITICAL SYSTEM ALERT";
             case "HIGH" -> "High Priority System Alert";
             case "MEDIUM" -> "System Alert";
@@ -28,15 +24,11 @@ public class SystemAlertNotificationBuilder implements NotificationMessageBuilde
     }
 
     @Override
-    public String buildMessage(EventPayload payload) {
-        if (!(payload instanceof SystemAlertPayload systemPayload)) {
-            throw new IllegalArgumentException("Invalid payload type for SYSTEM_ALERT");
-        }
-
+    public String buildMessage(SystemAlertPayload systemAlertPayload) {
         return String.format("[%s] %s - Component: %s",
-                systemPayload.getSeverity(),
-                systemPayload.getSystemMessage(),
-                systemPayload.getAffectedComponent()
+                systemAlertPayload.severity(),
+                systemAlertPayload.systemMessage(),
+                systemAlertPayload.affectedComponent()
         );
     }
 }

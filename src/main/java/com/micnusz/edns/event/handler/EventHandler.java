@@ -29,7 +29,7 @@ public class EventHandler {
             eventPersistenceService.save(envelope);
 
         } catch (DataIntegrityViolationException exception) {
-            log.info("Duplicate event detected. eventId={}", envelope.getEventId());
+            log.info("Duplicate event detected. eventId={}", envelope.eventId());
 
             //Metric
             eventMetrics.recordEventDuplicated();

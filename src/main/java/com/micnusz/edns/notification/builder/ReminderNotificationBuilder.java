@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class ReminderNotificationBuilder implements NotificationMessageBuilder {
+public class ReminderNotificationBuilder implements NotificationMessageBuilder<ReminderPayload> {
 
     private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -19,20 +19,16 @@ public class ReminderNotificationBuilder implements NotificationMessageBuilder {
     }
 
     @Override
-    public String buildTitle(EventPayload payload) {
+    public String buildTitle(ReminderPayload reminderPayload) {
         return "Reminder";
     }
 
     @Override
-    public String buildMessage(EventPayload payload) {
-        if (!(payload instanceof ReminderPayload reminderPayload)) {
-            throw new IllegalArgumentException("Invalid payload type for REMINDER");
-        }
-
+    public String buildMessage(ReminderPayload reminderPayload) {
         return String.format("%s - Task: %s (Due: %s)",
-                reminderPayload.getReminderMessage(),
-                reminderPayload.getTaskName(),
-                FORMATTER.format(reminderPayload.getReminderTime())
+                reminderPayload.reminderMessage(),
+                reminderPayload.taskName(),
+                FORMATTER.format(reminderPayload.reminderTime())
         );
     }
 }

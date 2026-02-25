@@ -6,7 +6,7 @@ import com.micnusz.edns.event.payload.EventPayload;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AlertNotificationBuilder implements NotificationMessageBuilder {
+public class AlertNotificationBuilder implements NotificationMessageBuilder<AlertPayload> {
 
     @Override
     public EventType supports() {
@@ -14,27 +14,19 @@ public class AlertNotificationBuilder implements NotificationMessageBuilder {
     }
 
     @Override
-    public String buildTitle(EventPayload payload) {
-        if (!(payload instanceof AlertPayload alertPayload)) {
-            return "Alert";
-        }
-
-        return switch (alertPayload.getAlertLevel().toUpperCase()) {
+    public String buildTitle(AlertPayload payload) {
+        return switch (payload.alertLevel().toUpperCase()) {
             case "ERROR" -> "Critical Alert";
             case "WARNING" -> "Warning";
-            default -> "Alert";
+            default -> "New Alert";
         };
     }
 
     @Override
-    public String buildMessage(EventPayload payload) {
-        if (!(payload instanceof AlertPayload alertPayload)) {
-            throw new IllegalArgumentException("Invalid payload type for ALERT");
-        }
-
+    public String buildMessage(AlertPayload payload) {
         return String.format("[%s] %s",
-                alertPayload.getAlertLevel(),
-                alertPayload.getAlertMessage()
+                payload.alertLevel(),
+                payload.alertMessage()
         );
     }
 }

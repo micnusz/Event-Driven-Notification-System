@@ -20,11 +20,11 @@ public class EventConsumer {
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void consume(EventEnvelope envelope) {
-        log.info("Processing event: {}", envelope.getEventId());
+        log.info("Processing event: {}", envelope.eventId());
 
         eventHandler.handle(envelope);
 
-        log.info("Event processed: {}", envelope.getEventId());
+        log.info("Event processed: {}", envelope.eventId());
     }
 }
 

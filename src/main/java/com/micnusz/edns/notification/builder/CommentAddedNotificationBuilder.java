@@ -7,7 +7,7 @@ import com.micnusz.edns.event.payload.EventPayload;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CommentAddedNotificationBuilder implements NotificationMessageBuilder {
+public class CommentAddedNotificationBuilder implements NotificationMessageBuilder<CommentAddedPayload> {
 
     @Override
     public EventType supports() {
@@ -15,20 +15,16 @@ public class CommentAddedNotificationBuilder implements NotificationMessageBuild
     }
 
     @Override
-    public String buildTitle(EventPayload payload) {
+    public String buildTitle(CommentAddedPayload commentAddedPayload) {
         return "New Comment";
     }
 
     @Override
-    public String buildMessage(EventPayload payload) {
-        if (!(payload instanceof CommentAddedPayload commentPayload)) {
-            throw new IllegalArgumentException("Invalid payload type for COMMENT_ADDED");
-        }
-
+    public String buildMessage(CommentAddedPayload commentAddedPayload) {
         return String.format("%s commented on '%s': %s",
-                commentPayload.getCommentAuthor(),
-                commentPayload.getTaskName(),
-                commentPayload.getCommentText()
+                commentAddedPayload.commentAuthor(),
+                commentAddedPayload.taskName(),
+                commentAddedPayload.commentText()
         );
     }
 }

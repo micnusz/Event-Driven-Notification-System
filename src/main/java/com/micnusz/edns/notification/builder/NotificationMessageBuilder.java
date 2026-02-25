@@ -3,12 +3,10 @@ package com.micnusz.edns.notification.builder;
 import com.micnusz.edns.event.payload.EventPayload;
 import com.micnusz.edns.event.enums.EventType;
 
-public interface NotificationMessageBuilder {
+public interface NotificationMessageBuilder<T extends  EventPayload> {
 
     EventType supports();
-
-    String buildTitle(EventPayload payload);
-
-    String buildMessage(EventPayload payload);
+    String buildTitle(T payload);
+    String buildMessage(T payload);
 }
 
