@@ -29,11 +29,7 @@ class NotificationBuilderTest {
 
     @Test
     void taskAssignedBuilder_shouldBuildCorrectMessage() {
-        TaskAssignedPayload payload = TaskAssignedPayload.builder()
-                .taskName("Fix bug")
-                .assignedBy("John")
-                .taskDescription("Critical bug")
-                .build();
+        TaskAssignedPayload payload = new TaskAssignedPayload("Fix bug","John","Critical bug", "01.03.2026");
 
         NotificationMessageBuilder builder = builders.stream()
                 .filter(b -> b.supports() == EventType.TASK_ASSIGNED)

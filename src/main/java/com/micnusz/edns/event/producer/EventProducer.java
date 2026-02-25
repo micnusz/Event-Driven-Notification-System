@@ -14,10 +14,10 @@ public class EventProducer {
     private final KafkaTemplate<String, EventEnvelope> kafkaTemplate;
 
     public void publish(EventEnvelope envelope) {
-        kafkaTemplate.send("events", envelope.getRecipientId(), envelope)
+        kafkaTemplate.send("events", envelope.recipientId(), envelope)
                 .whenComplete((result, ex) -> {
                     if (ex != null) {
-                        log.error("Failed to publish event {}", envelope.getEventId(), ex);
+                        log.error("Failed to publish event {}", envelope.eventId(), ex);
                     }
                 });
     }

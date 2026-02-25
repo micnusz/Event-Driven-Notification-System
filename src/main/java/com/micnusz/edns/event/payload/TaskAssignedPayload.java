@@ -5,13 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class TaskAssignedPayload implements EventPayload {
-    private String taskName;
-    private String taskDescription;
-    private String assignedBy;
-    private String dueDate;
+
+public record TaskAssignedPayload (
+         String taskName,
+         String taskDescription,
+         String assignedBy,
+         String dueDate
+) implements EventPayload {
+
 }

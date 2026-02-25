@@ -1,16 +1,8 @@
 package com.micnusz.edns.event.payload;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class AlertPayload implements EventPayload {
-    private String alertMessage;
-    private String alertLevel;
-    private String relatedTaskId;
-}
+public record AlertPayload(
+        String alertMessage,
+        String alertLevel,
+        String relatedTaskId
+) implements EventPayload {}

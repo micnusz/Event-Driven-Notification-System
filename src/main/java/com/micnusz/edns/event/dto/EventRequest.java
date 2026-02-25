@@ -9,19 +9,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class EventRequest {
-    @NotNull
-    EventType type;
-    @NotBlank
-    String recipientId;
-    @NotNull
-    EventPayload payload;
+public record EventRequest(
+        @NotNull
+        EventType type,
+        @NotBlank
+        String recipientId,
+        @NotNull
+        EventPayload payload,
 
-    private String idempotencyKey;
-
-}
+        String idempotencyKey
+) {}
 

@@ -29,13 +29,13 @@ public class EventApplicationService {
 
         UUID eventId;
 
-        if (request.getIdempotencyKey() != null && !request.getIdempotencyKey().isBlank()) {
+        if (request.idempotencyKey() != null && !request.idempotencyKey().isBlank()) {
             eventId = UUID.nameUUIDFromBytes(
-                    request.getIdempotencyKey().getBytes(StandardCharsets.UTF_8)
+                    request.idempotencyKey().getBytes(StandardCharsets.UTF_8)
             );
 
             if (eventRepository.existsById(eventId)) {
-                log.info("Duplicate request ignored. idempotencyKey={}", request.getIdempotencyKey());
+                log.info("Duplicate request ignored. idempotencyKey={}", request.idempotencyKey());
 
                 // Metric
                 eventMetrics.recordEventDuplicated();
@@ -43,7 +43,7 @@ public class EventApplicationService {
                 return new EventResponse(eventId);
             }
 
-            log.info("Using client-provided idempotency key: {}", request.getIdempotencyKey());
+            log.info("Using client-provided idempotency key: {}", request.idempotencyKey());
 
         } else {
             eventId = UUID.randomUUID();
@@ -52,10 +52,10 @@ public class EventApplicationService {
 
         EventEnvelope envelope = new EventEnvelope(
                 eventId,
-                request.getType(),
-                request.getRecipientId(),
+                request.type(),
+                request.recipientId(),
                 Instant.now(),
-                request.getPayload(),
+                request.payload(),
                 1
         );
 
@@ -68,7 +68,7 @@ public class EventApplicationService {
 
         log.info("Event created. eventId={} idempotencyKey={}",
                 eventId,
-                request.getIdempotencyKey() != null ? request.getIdempotencyKey() : "none");
+                request.idempotencyKey() != null ? request.idempotencyKey() : "none");
 
         return new EventResponse(eventId);
     }

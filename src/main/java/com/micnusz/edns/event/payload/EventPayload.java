@@ -18,5 +18,5 @@ import lombok.*;
         @JsonSubTypes.Type(value = AlertPayload.class, name = "ALERT"),
         @JsonSubTypes.Type(value = SystemAlertPayload.class, name = "SYSTEM_ALERT")
 })
-public interface EventPayload {
+public sealed interface EventPayload permits AlertPayload, CommentAddedPayload, ReminderPayload, SystemAlertPayload, TaskAssignedPayload, TaskCompletedPayload {
 }
