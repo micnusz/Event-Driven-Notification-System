@@ -11,7 +11,7 @@ public class UserMapper {
 
     public UserEntity toEntity(UserRequest userRequest) {
         UserEntity userEntity = new UserEntity();
-        userEntity.setEmail(userRequest.getEmail());
+        userEntity.setEmail(userRequest.email());
         return userEntity;
     }
 

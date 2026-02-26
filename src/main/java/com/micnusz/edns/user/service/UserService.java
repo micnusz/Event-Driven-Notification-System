@@ -20,9 +20,9 @@ public class UserService {
 
     @Transactional
     public UserResponse createUser(UserRequest request) {
-        userRepository.findByEmail(request.getEmail())
+        userRepository.findByEmail(request.email())
                 .ifPresent(user -> {
-                    throw new EmailAlreadyExistsException(request.getEmail());
+                    throw new EmailAlreadyExistsException(request.email());
                 });
 
         UserEntity user = userMapper.toEntity(request);

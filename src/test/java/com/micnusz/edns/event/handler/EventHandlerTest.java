@@ -2,7 +2,9 @@ package com.micnusz.edns.event.handler;
 
 import com.micnusz.edns.event.dto.EventEnvelope;
 import com.micnusz.edns.event.enums.EventType;
+import com.micnusz.edns.event.payload.TaskAssignedPayload;
 import com.micnusz.edns.event.service.EventPersistenceService;
+import com.micnusz.edns.metrics.EventMetrics;
 import com.micnusz.edns.notification.service.NotificationApplicationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,73 +26,78 @@ class EventHandlerTest {
 
     @Mock
     private EventPersistenceService eventPersistenceService;
+
     @Mock
     private NotificationApplicationService notificationApplicationService;
+
+    @Mock
+    private EventMetrics eventMetrics;
+
     @InjectMocks
     private EventHandler eventHandler;
 
-
     @Test
     void shouldPersistEventAndDispatchNotification() {
-        // given
-        EventEnvelope envelope = EventEnvelope.builder()
-                .eventId(UUID.randomUUID())
-                .type(EventType.TASK_ASSIGNED)
-                .recipientId("user-1")
-                .occurredAt(Instant.now())
-                .version(1)
-                .build();
+        TaskAssignedPayload payload = new TaskAssignedPayload("Task 1", "Alice", "Do something", "01-03-2026");
+        EventEnvelope envelope = new EventEnvelope(
+                UUID.randomUUID(),
+                EventType.TASK_ASSIGNED,
+                "user-1",
+                Instant.now(),
+                payload,
+                1
+        );
 
         doNothing().when(eventPersistenceService).save(envelope);
 
-        // when
         eventHandler.handle(envelope);
 
-        // then
         verify(eventPersistenceService).save(envelope);
         verify(notificationApplicationService).handle(any());
+        verify(eventMetrics).recordEventProcessed();
+        verify(eventMetrics).recordEventProcessingTime(anyLong());
     }
 
     @Test
     void shouldNotDispatchNotificationWhenEventIsDuplicate() {
-        // given
-        EventEnvelope envelope = EventEnvelope.builder()
-                .eventId(UUID.randomUUID())
-                .type(EventType.TASK_ASSIGNED)
-                .recipientId("user-1")
-                .occurredAt(Instant.now())
-                .version(1)
-                .build();
+        TaskAssignedPayload payload = new TaskAssignedPayload("Task 1", "Alice", "Do something", "01-03-2026");
+        EventEnvelope envelope = new EventEnvelope(
+                UUID.randomUUID(),
+                EventType.TASK_ASSIGNED,
+                "user-1",
+                Instant.now(),
+                payload,
+                1
+        );
 
         doThrow(new DataIntegrityViolationException("duplicate"))
                 .when(eventPersistenceService)
                 .save(envelope);
 
-        // when
         eventHandler.handle(envelope);
 
-        // then
         verify(eventPersistenceService).save(envelope);
         verify(notificationApplicationService, never()).handle(any());
+        verify(eventMetrics).recordEventDuplicated(); // <- teraz jest mock
     }
 
     @Test
     void shouldPropagateExceptionWhenDispatchFails() {
-        // given
-        EventEnvelope envelope = EventEnvelope.builder()
-                .eventId(UUID.randomUUID())
-                .type(EventType.TASK_ASSIGNED)
-                .recipientId("user-1")
-                .occurredAt(Instant.now())
-                .version(1)
-                .build();
+        TaskAssignedPayload payload = new TaskAssignedPayload("Task 1", "Alice", "Do something", "01-03-2026");
+        EventEnvelope envelope = new EventEnvelope(
+                UUID.randomUUID(),
+                EventType.TASK_ASSIGNED,
+                "user-1",
+                Instant.now(),
+                payload,
+                1
+        );
 
         doNothing().when(eventPersistenceService).save(envelope);
         doThrow(new RuntimeException("dispatch failed"))
                 .when(notificationApplicationService)
                 .handle(any());
 
-        // when & then
         assertThatThrownBy(() -> eventHandler.handle(envelope))
                 .isInstanceOf(RuntimeException.class);
 
@@ -98,6 +105,3 @@ class EventHandlerTest {
         verify(notificationApplicationService).handle(any());
     }
 }
-
-
-

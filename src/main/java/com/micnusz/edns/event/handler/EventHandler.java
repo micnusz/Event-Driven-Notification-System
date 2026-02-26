@@ -3,7 +3,7 @@ package com.micnusz.edns.event.handler;
 import com.micnusz.edns.event.dto.EventEnvelope;
 import com.micnusz.edns.event.service.EventPersistenceService;
 import com.micnusz.edns.metrics.EventMetrics;
-import com.micnusz.edns.notification.NotificationCommand;
+import com.micnusz.edns.notification.dto.NotificationCommand;
 import com.micnusz.edns.notification.service.NotificationApplicationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

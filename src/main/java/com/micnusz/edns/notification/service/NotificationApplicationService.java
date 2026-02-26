@@ -1,6 +1,6 @@
 package com.micnusz.edns.notification.service;
 
-import com.micnusz.edns.notification.NotificationCommand;
+import com.micnusz.edns.notification.dto.NotificationCommand;
 import com.micnusz.edns.notification.NotificationDispatcher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -35,9 +35,9 @@ public class EventDLQConsumer {
                 Recipient: {}
                 Exception: {}
                 """,
-                    envelope != null ? envelope.getEventId() : "DESERIALIZATION_FAILED",
-                    envelope != null ? envelope.getType() : "UNKNOWN",
-                    envelope != null ? envelope.getRecipientId() : "UNKNOWN",
+                    envelope != null ? envelope.eventId() : "DESERIALIZATION_FAILED",
+                    envelope != null ? envelope.type() : "UNKNOWN",
+                    envelope != null ? envelope.recipientId() : "UNKNOWN",
                     error
             );
         } catch (Exception e) {

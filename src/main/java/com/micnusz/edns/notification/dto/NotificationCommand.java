@@ -1,4 +1,4 @@
-package com.micnusz.edns.notification;
+package com.micnusz.edns.notification.dto;
 
 import com.micnusz.edns.event.payload.EventPayload;
 import com.micnusz.edns.event.enums.EventType;
@@ -14,10 +14,10 @@ public record NotificationCommand(
 ) {
     public static NotificationCommand from(EventEnvelope envelope) {
         return new NotificationCommand(
-                envelope.getEventId(),
-                envelope.getType(),
-                envelope.getRecipientId(),
-                envelope.getPayload()
+                envelope.eventId(),
+                envelope.type(),
+                envelope.recipientId(),
+                envelope.payload()
         );
     }
 }
